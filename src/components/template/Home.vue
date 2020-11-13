@@ -21,37 +21,20 @@ export default {
   components: {
     Coluna, TarefaDialog
   },
-  data() {
-    return {
-      tarefasAbertas: [
-        {
-          id: 1,
-          titulo: "Tarefa X",
-          status: "ABERTA",
-        },
-      ],
-      tarefasEmAndamento: [
-        {
-          id: 2,
-          titulo: "Tarefa Z",
-          status: "EM_ANDAMENTO",
-        },
-      ],
-      tarefasConcluidas: [
-        {
-          id: 3,
-          titulo: "Tarefa W",
-          status: "CONCLUIDA",
-        },
-      ],
-      tarefasCanceladas: [
-        {
-          id: 4,
-          titulo: "Tarefa Y",
-          status: "CONCLUIDA",
-        },
-      ],
-    };
+  computed: {
+    tarefasAbertas() {
+      // https://vuex.vuejs.org/guide/getters.html#method-style-access
+      return this.$store.getters.tarefasPorStatus('ABERTA')      
+    },
+    tarefasEmAndamento() {
+      return this.$store.getters.tarefasPorStatus('EM_ANDAMENTO')      
+    },
+    tarefasConcluidas() {
+      return this.$store.getters.tarefasPorStatus('CONCLUIDA')      
+    },
+    tarefasCanceladas() {
+      return this.$store.getters.tarefasPorStatus('CANCELADA')      
+    },
   },
 };
 </script>
