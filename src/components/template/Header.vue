@@ -32,4 +32,4 @@ export default {};
 .titulo:hover {
   cursor: pointer;
 }
-</style> 
+</style>

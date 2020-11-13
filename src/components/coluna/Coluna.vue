@@ -14,6 +14,7 @@
 
 <script>
 import TarefaCard from '../tarefa/TarefaCard'
+
 export default {
   components: {
     TarefaCard

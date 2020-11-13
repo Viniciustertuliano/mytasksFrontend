@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" outlined>
-    <v-card-title> {{ tarefa.titulo }} </v-card-title>
+    <v-card-title @click="editarTarefa" class="titulo"> {{ tarefa.titulo }} </v-card-title>
 
     <v-card-actions>
       <v-btn ico class="primary" @click="iniciar" v-if="showIniciar"><v-icon>mdi-play</v-icon></v-btn>
@@ -28,17 +28,26 @@ export default {
     },
     methods: {
         iniciar() {
-          console.log('inciar')
+          this.tarefa.status = 'EM_ANDAMENTO'
+          this.$store.dispatch('atualizarTarefa', this.tarefa)
         },
         concluir() {
-            console.log('concluir')
+          this.tarefa.status = 'CONCLUIDA'
+          this.$store.dispatch('atualizarTarefa', this.tarefa)
         },
         cancelar() {
-            console.log('cancelar')
+          this.tarefa.status = 'CANCELADA'
+          this.$store.dispatch('atualizarTarefa', this.tarefa)
+        },
+        editarTarefa() {
+            this.$store.dispatch('editarTarefa', this.tarefa)
         }
     }
 };
 </script>
 
 <style>
+.titulo:hover {
+  cursor: pointer;
+}
 </style>

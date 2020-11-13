@@ -25,11 +25,11 @@
         <v-container>
           <v-row>
             <v-col cols="12" sm="12" md="12">
-              <v-text-field label="Título" required></v-text-field>
+              <v-text-field label="Título" required v-model="tarefa.titulo"></v-text-field>
             </v-col>
 
             <v-col cols="12">
-              <v-textarea label="Descrição" required></v-textarea>
+              <v-textarea label="Descrição" required v-model="tarefa.descricao"></v-textarea>
             </v-col>
             <v-col cols="12">
               <v-menu
@@ -62,15 +62,20 @@
             </v-col>
             <v-col cols="12" sm="12" md="6">
               <v-select
-                :items="['Baixo', 'Medio', 'Alto']"
+                :items="prioridades"
                 label="Prioridade"
-                required
+                item-text="nome"
+                item-value="valor"
+                v-model="tarefa.prioridade"
               ></v-select>
             </v-col>
 
             <v-col cols="12" sm="12" md="6">
               <v-select
-                :items="['Pessoal', 'Profissional']"
+                :items="categorias"
+                item-text="nome"
+                item-value="id"
+                v-model="tarefa.categoriaId"
                 label="Categoria"
                 required
               ></v-select>
@@ -83,7 +88,7 @@
         <v-btn color="blue darken-1" text @click="dialog = false">
           Cancelar
         </v-btn>
-        <v-btn color="blue darken-1" text @click="dialog = false">
+        <v-btn color="blue darken-1" text @click="salvar">
           Salvar
         </v-btn>
       </v-card-actions>
@@ -97,20 +102,62 @@ export default {
     return {
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: this.formatDate(new Date().toISOString().substr(0, 10)),
-      dialog: false,
+      // dialog: false,
       menu1: false,
-      menu2: false,
+      tarefa: {},
+      prioridades: [
+        { valor: 1, nome: "Baixa" },
+        { valor: 2, nome: "Média" },
+        { valor: 3, nome: "Alta" },
+      ]
     };
   },
+  computed: {
+    categorias() {
+      return this.$store.getters.categorias
+    },
+    dialog: {
+      get: function() {
+        return this.$store.getters.showDialog
+      },
+      set: function(value) {
+        this.$store.dispatch('atualizaDialog', value)
+      }
+    }
+  },
+  watch: {
+    date() {
+      this.dateFormatted = this.formatDate(this.date);
+    },
+    dialog() {
+      if (this.dialog) {
+        this.$store.dispatch('carregarCategorias')
+        this.tarefa = this.$store.getters.tarefaEdicao
+        this.date = this.tarefa.dataEntrega
+      } else {
+        this.$store.dispatch('limparForm')
+      }
+    }
+  },
   methods: {
+    salvar() {
+      this.tarefa.dataEntrega = this.date
+      if (this.tarefa.id)
+        this.$store.dispatch('atualizarTarefa', this.tarefa)
+      else
+        this.$store.dispatch('salvarTarefa', this.tarefa)
+      this.dialog = false
+    },
     formatDate(date) {
       if (!date) return null;
+
       const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
+      return `${day}/${month}/${year}`;
     },
     parseDate(date) {
       if (!date) return null;
-      const [month, day, year] = date.split("/");
+
+      const [day, month, year] = date.split("/");
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     },
   },

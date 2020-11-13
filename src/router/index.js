@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '@/components/template/Home';
-import Categoria from '@/components/categoria/Categoria';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '@/components/template/Home'
+import Categoria from '@/components/categoria/Categoria'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
@@ -16,10 +16,13 @@ const routes = [
     component: Categoria,
     name: 'Categoria'
   },
-];
+
+]
 
 const router = new VueRouter({
-  routes,
-});
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
 
-export default router;
+export default router

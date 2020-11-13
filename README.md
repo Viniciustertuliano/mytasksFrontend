@@ -1,4 +1,4 @@
-# mytasksfrontend
+# mytasks-frontend
 
 ## Project setup
 ```

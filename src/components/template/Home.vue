@@ -17,6 +17,7 @@
 <script>
 import Coluna from "../../components/coluna/Coluna"
 import TarefaDialog from '../tarefa/TarefaDialog'
+
 export default {
   components: {
     Coluna, TarefaDialog
@@ -36,6 +37,9 @@ export default {
       return this.$store.getters.tarefasPorStatus('CANCELADA')      
     },
   },
+  mounted() {
+    this.$store.dispatch('carregarTarefas')
+  }
 };
 </script>
 
