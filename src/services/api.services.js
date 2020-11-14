@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const httpClient = axios.create({
-    baseURL: 'http://localhost:8081/mytasks'
+    baseURL: 'https://mytasks-back.herokuapp.com/mytasks'
 })
 
 export default httpClient
